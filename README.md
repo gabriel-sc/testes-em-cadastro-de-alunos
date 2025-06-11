@@ -4,3 +4,4 @@ Problemas enfrentados;
 -Conseguir rodar os testes sendo usado o script passado pelo professor (onde tive que fazer mudancas);
 -Fazer os testes unitarios e de componentes aplicar corretamente sua funcao ;
 -Nao conseguir entender como modificar certas coisas para fazer outros testes em cima tais como testes no campo (idade) ;
+-Encontrado um defeito no INDEX.html onde algumas funções relacionadas a testes unitarios (todos) estavam dando is not define; 
