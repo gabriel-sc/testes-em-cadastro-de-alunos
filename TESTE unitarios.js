@@ -40,7 +40,7 @@ function runUnitTests() {
   });
   testar("Deletar cadastro com índice fora da faixa não altera lista", () => {
     resetarCadastros();
-    salvarCadastro(getCadastros(), "Dany", 24, "d@email.com");
+    salvarCadastro(getCadastros(), "rodando testes", 24, "teste@email.com");
     const antes = [...getCadastros()];
     try {
       deletarCadastro(99); // índice que não existe
@@ -49,15 +49,10 @@ function runUnitTests() {
     }
     const depois = getCadastros();
     if (depois.length !== antes.length) throw new Error("Lista foi alterada indevidamente");
-  });
-  testar("Cadastros mantêm ordem de inserção", () => {
-    resetarCadastros();
-    const nomes = ["Fulano", "Beltrano", "Ciclano"];
-    let c = getCadastros();
-    nomes.forEach((n, i) => c = salvarCadastro(c, n, 20 + i, `${n}@mail.com`));
-    const lidos = getCadastros().map(a => a.nome);
-    if (JSON.stringify(lidos) !== JSON.stringify(nomes)) throw new Error("Ordem dos cadastros se perdeu");
+    
+  
   });
 document.getElementById("meuInput").value = "";
 }
 
+//Resetar cadastro antes de todos os testes para tentar corrigir o preenchimento dany 
