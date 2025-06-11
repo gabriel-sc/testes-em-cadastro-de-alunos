@@ -27,6 +27,7 @@ function runUnitTests() {
     const cadastros = getCadastros();
     if (cadastros.length !== 0) throw new Error("Cadastros não foram resetados");
   });
+
   testar("Salvar cadastro rejeita idade ≤ 0", () => {
     resetarCadastros();
     for (const idade of [0, -1]) {
@@ -34,25 +35,24 @@ function runUnitTests() {
         salvarCadastro(getCadastros(), "Carlos", idade, "c@email.com");
         throw new Error("Idade inválida foi aceita");
       } catch (e) {
-        if (!/idade/i.test(e.message)) throw e;
+        if (!/idade/i.test(e.message.toLowerCase())) throw e;
       }
     }
   });
+
   testar("Deletar cadastro com índice fora da faixa não altera lista", () => {
     resetarCadastros();
-    salvarCadastro(getCadastros(), "rodando testes", 24, "teste@email.com");
+    salvarCadastro(getCadastros(), "Rodando Teste", 24, "teste@email.com");
     const antes = [...getCadastros()];
     try {
       deletarCadastro(99); // índice que não existe
     } catch (_) {
-      /* talvez seu código lance erro – não há problema, PROCURAR PROBLEMA QUE PODERA SER LANCADO NO CODIGO */
+      // Ignorar erro esperado
     }
     const depois = getCadastros();
     if (depois.length !== antes.length) throw new Error("Lista foi alterada indevidamente");
-    
-  
   });
-document.getElementById("meuInput").value = "";
 }
 
-//Resetar cadastro antes de todos os testes para tentar corrigir o preenchimento dany 
+// Botão que executa os testes
+document.getElementById("rodarTestesUnitBtn").addEventListener("click", runUnitTests);

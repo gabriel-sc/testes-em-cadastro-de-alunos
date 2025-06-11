@@ -39,6 +39,6 @@ function runComponentTests() {
       throw new Error("A lista de cadastros não está visível");
     }
   });
-  document.getElementById("meuInput").value = "";
+
 
 }

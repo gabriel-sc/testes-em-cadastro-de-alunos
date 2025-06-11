@@ -34,31 +34,6 @@
   <pre id="testes-resultados"></pre>
 
   <script>
-    // Funções do app (usando localStorage)
-
-    function carregarCadastros() {
-      const lista = document.getElementById("listaCadastros");
-      lista.innerHTML = "";
-      const cadastros = getCadastros();
-      cadastros.forEach((aluno, index) => {
-        const div = document.createElement("div");
-        div.className = "cadastro";
-        div.innerHTML = `
-          <button onclick="deletarCadastro(${index})">&times;</button>
-          <p><strong>Nome:</strong> ${aluno.nome}</p>
-          <p><strong>Idade:</strong> ${aluno.idade}</p>
-          <p><strong>Email:</strong> ${aluno.email}</p>
-        `;
-        lista.appendChild(div);
-      });
-    }
-
-    function salvarCadastro(cadastros, nome, idade, email) {
-      cadastros.push({ nome, idade, email });
-      localStorage.setItem("cadastros", JSON.stringify(cadastros));
-      return cadastros;
-    }
-
     function deletarCadastro(index) {
       const cadastros = getCadastros();
       cadastros.splice(index, 1);
@@ -80,42 +55,12 @@
         carregarCadastros();
       }
     }
-
-    document.getElementById("formCadastro").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nome = document.getElementById("nome").value.trim();
-      const idade = document.getElementById("idade").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      if (nome && idade && email) {
-        const cadastros = getCadastros();
-        salvarCadastro(cadastros, nome, idade, email);
-        e.target.reset();
-        carregarCadastros();
-      }
-    });
-
-    window.onload = carregarCadastros;
-
-    // Função para exibir resultados dos testes
-    function testar(nomeDoTeste, funcaoDeTeste) {
-      const resultadosDiv = document.getElementById("testes-resultados");
-      try {
-        funcaoDeTeste();
-        resultadosDiv.innerText += `✅ ${nomeDoTeste}\n`;
-      } catch (erro) {
-        resultadosDiv.innerText += `❌ ${nomeDoTeste} - ${erro.message}\n`;
-      }
-    }
-
-
-
-
-
+    //Tentei a remoção dessas função no codigo de html, mas enfrentei problemas nos testes unitarios ()
     // Eventos para rodar os testes
 
 
   </script>
+  <script src="Script.js"></script>
   <script src="Script.testes.js"></script>
   <script src="TESTES componentes.js"></script>
   <script src="TESTE unitarios.js"></script>

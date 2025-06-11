@@ -1,11 +1,10 @@
-// Referências aos elementos HTML
 const form = document.getElementById("formCadastro");
 const lista = document.getElementById("listaCadastros");
 
 // Função que carrega os cadastros do localStorage
 function carregarCadastros() {
   lista.innerHTML = "";
-  const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
+  const cadastros = getCadastros();
 
   cadastros.forEach((aluno, index) => {
     const div = document.createElement("div");
@@ -20,6 +19,45 @@ function carregarCadastros() {
   });
 }
 
+// Recupera os cadastros do localStorage
+function getCadastros() {
+  return JSON.parse(localStorage.getItem("cadastros")) || [];
+}
+
+// Salva um novo cadastro
+function salvarCadastro(cadastros, nome, idade, email) {
+  cadastros.push({ nome, idade, email });
+  localStorage.setItem("cadastros", JSON.stringify(cadastros));
+  return cadastros;
+}
+
+// Deleta um cadastro específico
+function deletarCadastro(index) {
+  const cadastros = getCadastros();
+  cadastros.splice(index, 1);
+  localStorage.setItem("cadastros", JSON.stringify(cadastros));
+  carregarCadastros();
+}
+
+// Reseta todos os cadastros
+function resetarFormulario() {
+  if (confirm("Tem certeza que deseja apagar todos os cadastros?")) {
+    localStorage.removeItem("cadastros");
+    carregarCadastros();
+  }
+}
+
+// Função para testes
+function testar(nomeDoTeste, funcaoDeTeste) {
+  const resultadosDiv = document.getElementById("testes-resultados");
+  try {
+    funcaoDeTeste();
+    resultadosDiv.innerText += `✅ ${nomeDoTeste}\n`;
+  } catch (erro) {
+    resultadosDiv.innerText += `❌ ${nomeDoTeste} - ${erro.message}\n`;
+  }
+}
+
 // Evento de envio do formulário
 form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -29,28 +67,12 @@ form.addEventListener("submit", function (e) {
   const email = document.getElementById("email").value.trim();
 
   if (nome && idade && email) {
-    const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
-    cadastros.push({ nome, idade, email });
-    localStorage.setItem("cadastros", JSON.stringify(cadastros));
-
+    const cadastros = getCadastros();
+    salvarCadastro(cadastros, nome, idade, email);
     form.reset();
     carregarCadastros();
   }
 });
 
-// Função para deletar um cadastro específico
-function deletarCadastro(index) {
-  const cadastros = JSON.parse(localStorage.getItem("cadastros")) || [];
-  cadastros.splice(index, 1);
-  localStorage.setItem("cadastros", JSON.stringify(cadastros));
-  carregarCadastros();
-}
-
-// Função para resetar todos os cadastros
-function resetarFormulario() {
-  if (confirm("Tem certeza que deseja apagar todos os cadastros?")) {
-    localStorage.removeItem("cadastros");
-    carregarCadastros();
-  }
-}
-
+// Carrega cadastros ao abrir a página
+window.onload = carregarCadastros;
