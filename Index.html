@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro com Testes Integrados</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    button {
+      padding: 10px 15px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    #testes-resultados {
+      background: #eee;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      min-height: 120px;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+    .cadastro {
+      background: #f1fdfd;
+      padding: 15px;
+      border-left: 5px solid #67c6c5;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .cadastro button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: none;
+      background: #f44336;
+      color: white;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
+    .cadastro button:hover {
+      background: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Cadastro de Alunos</h2>
+
+  <form id="formCadastro">
+    <input type="text" id="nome" placeholder="Nome completo" required />
+    <input type="number" id="idade" placeholder="Idade" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <div style="margin-top:10px;">
+      <button type="submit">Salvar Cadastro</button>
+      <button type="button" onclick="resetarFormulario()">Resetar Tudo</button>
+    </div>
+  </form>
+
+  <div id="listaCadastros" style="margin-top:30px;"></div>
+
+  <hr style="margin:40px 0;" />
+
+  <button id="rodarTestesUnitBtn">Rodar Testes Unitários</button>
+  <button id="rodarTestesComponentBtn">Rodar Testes de Componentes</button>
+
+  <pre id="testes-resultados"></pre>
+
+  <script>
+    // Funções do app (usando localStorage)
+
+    function carregarCadastros() {
+      const lista = document.getElementById("listaCadastros");
+      lista.innerHTML = "";
+      const cadastros = getCadastros();
+      cadastros.forEach((aluno, index) => {
+        const div = document.createElement("div");
+        div.className = "cadastro";
+        div.innerHTML = `
+          <button onclick="deletarCadastro(${index})">&times;</button>
+          <p><strong>Nome:</strong> ${aluno.nome}</p>
+          <p><strong>Idade:</strong> ${aluno.idade}</p>
+          <p><strong>Email:</strong> ${aluno.email}</p>
+        `;
+        lista.appendChild(div);
+      });
+    }
+
+    function salvarCadastro(cadastros, nome, idade, email) {
+      cadastros.push({ nome, idade, email });
+      localStorage.setItem("cadastros", JSON.stringify(cadastros));
+      return cadastros;
+    }
+
+    function deletarCadastro(index) {
+      const cadastros = getCadastros();
+      cadastros.splice(index, 1);
+      localStorage.setItem("cadastros", JSON.stringify(cadastros));
+      carregarCadastros();
+    }
+
+    function resetarCadastros() {
+      localStorage.removeItem("cadastros");
+    }
+
+    function getCadastros() {
+      return JSON.parse(localStorage.getItem("cadastros")) || [];
+    }
+
+    function resetarFormulario() {
+      if (confirm("Tem certeza que deseja apagar todos os cadastros?")) {
+        resetarCadastros();
+        carregarCadastros();
+      }
+    }
+
+    document.getElementById("formCadastro").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nome = document.getElementById("nome").value.trim();
+      const idade = document.getElementById("idade").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (nome && idade && email) {
+        const cadastros = getCadastros();
+        salvarCadastro(cadastros, nome, idade, email);
+        e.target.reset();
+        carregarCadastros();
+      }
+    });
+
+    window.onload = carregarCadastros;
+
+    // Função para exibir resultados dos testes
+    function testar(nomeDoTeste, funcaoDeTeste) {
+      const resultadosDiv = document.getElementById("testes-resultados");
+      try {
+        funcaoDeTeste();
+        resultadosDiv.innerText += `✅ ${nomeDoTeste}\n`;
+      } catch (erro) {
+        resultadosDiv.innerText += `❌ ${nomeDoTeste} - ${erro.message}\n`;
+      }
+    }
+
+   
+
+  
+
+    // Eventos para rodar os testes
+
+
+  </script>
+  <script src="Script.testes.js"></script>
+  <script src="TESTES componentes.js"></script>
+  <script src="TESTE unitarios.js"></script>
+</body>
+</html>
