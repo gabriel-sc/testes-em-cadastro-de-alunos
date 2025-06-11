@@ -46,7 +46,9 @@ function resetarFormulario() {
     carregarCadastros();
   }
 }
-
+function resetarCadastros() {
+  localStorage.removeItem("cadastros");
+}
 // Função para testes
 function testar(nomeDoTeste, funcaoDeTeste) {
   const resultadosDiv = document.getElementById("testes-resultados");

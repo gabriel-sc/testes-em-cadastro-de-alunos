@@ -34,27 +34,9 @@
   <pre id="testes-resultados"></pre>
 
   <script>
-    function deletarCadastro(index) {
-      const cadastros = getCadastros();
-      cadastros.splice(index, 1);
-      localStorage.setItem("cadastros", JSON.stringify(cadastros));
-      carregarCadastros();
-    }
+   
 
-    function resetarCadastros() {
-      localStorage.removeItem("cadastros");
-    }
-
-    function getCadastros() {
-      return JSON.parse(localStorage.getItem("cadastros")) || [];
-    }
-
-    function resetarFormulario() {
-      if (confirm("Tem certeza que deseja apagar todos os cadastros?")) {
-        resetarCadastros();
-        carregarCadastros();
-      }
-    }
+   
     //Tentei a remoção dessas função no codigo de html, mas enfrentei problemas nos testes unitarios ()
     // Eventos para rodar os testes
 
